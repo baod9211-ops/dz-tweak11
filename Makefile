@@ -1,22 +1,13 @@
-ARCHS = arm64
-DEBUG = 0
-FINALPACKAGE = 1
-FOR_RELEASE = 1
-THEOS_PACKAGE_SCHEME = rootless
+export THEOS ?= $(HOME)/theos
+
+TARGET := iphone:clang:latest:14.0
+INSTALL_TARGET_PROCESSES = SpringBoard
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = 34306jit
+TWEAK_NAME = mytweak
 
-$(TWEAK_NAME)_CCFLAGS = -std=c++17 -fno-rtti -DNDEBUG -Wall -Wno-unused-variable -Wno-unused-function -Wno-unused-value -fvisibility=hidden
-$(TWEAK_NAME)_CFLAGS = -fobjc-arc -Wall -Wno-unused-variable -Wno-unused-function -Wno-unused-value -fvisibility=hidden
+mytweak_FILES = Tweak.x
+mytweak_CFLAGS = -fobjc-arc
 
-$(TWEAK_NAME)_FRAMEWORKS = UIKit Foundation Security QuartzCore CoreGraphics CoreText AVFoundation Accelerate GLKit SystemConfiguration GameController
-
-$(TWEAK_NAME)_LDFLAGS += -L./packages -lTKAPIKey
-$(TWEAK_NAME)_LDFLAGS += Other/libdobby_fixed.a
-
-$(TWEAK_NAME)_FILES = ImGuiDrawView.mm \
-                      oxorany/oxorany.cpp
-
-include $(THEOS_MAKE_PATH)/tweak.mk
+include $(THEOS)/makefiles/tweak.mk
